@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
   res.send('Welcome To Euphoria');
 });
 
-// const sweatersController = require("./controllers/sweatersController.js");
-// app.use("/sweaters", sweatersController);
+const clothingController = require("./controllers/clothingController.js");
+app.use("/clothes", clothingController);
 
 app.get("*", (req, res) => {
     res.status(404).send("Page not found: URL is not in the scope of any known routings");

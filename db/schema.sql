@@ -4,8 +4,10 @@ CREATE DATABASE euphoria_app;
 
 \c euphoria_app;
 
-CREATE TABLE sweaters (
+
+CREATE TABLE clothes (
    id SERIAL PRIMARY KEY,
+   type_of_clothing TEXT NOT NULL,
   size  TEXT NOT NULL,
   price DECIMAL NOT NULL,
   stock INTEGER,
