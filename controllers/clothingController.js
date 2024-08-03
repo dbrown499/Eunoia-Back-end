@@ -5,7 +5,8 @@ const {
   getAllClothes, 
   getOneTypeOfClothing, 
   addClothingItem,
-  updateClotheInformation 
+  updateClotheInformation,
+  deleteClothingItem 
 }= require('../queries/clothing')
 
 const checkValidNewInfo = require('../validations/clothingValidations')
@@ -48,16 +49,16 @@ clothes.put("/:id", async (req,res)=>{
 });
 
 
-// clothes.delete("/:id", async (req, res) => {
-//     const { id } = req.params;
-//     const deletedSong = await deleteSong(id);
+clothes.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    const deletedClothing = await deleteClothingItem(id);
     
-//     if(deletedSong.id) {
-//         res.status(200).json({ message: `The song called "${deletedSong.name}" has been deleted.` });
-//     } else {
-//         res.status(404).json( {error: "Song could not be deleted" });
-//     }
-// });
+    if(deletedClothing.id) {
+        res.status(200).json({ message: `The clothing item called "${deletedClothing.type_of_clothing}" has been removed.` });
+    } else {
+        res.status(404).json( {error: `Item located at id ${id} could not be found `});
+    }
+});
 
 
   module.exports = clothes;
