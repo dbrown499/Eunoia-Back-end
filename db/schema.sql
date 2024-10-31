@@ -18,6 +18,7 @@ CREATE DATABASE eunoia_app;
 
 CREATE TABLE Products (
     product_id SERIAL PRIMARY KEY,
+    type TEXT NOT NULL,
     name VARCHAR(150) NOT NULL,
     description TEXT,
     size  TEXT NOT NULL,
