@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 
 app.get('/', (req, res) => {
-  res.send('Welcome To Euphoria');
+  res.send('Welcome To Eunoia');
 });
 
 const clothingController = require("./controllers/clothingController.js");

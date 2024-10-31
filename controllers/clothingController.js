@@ -42,7 +42,7 @@ clothes.put("/:id", async (req,res)=>{
     const { id } = req.params;
     const updateClotheInfo = await updateClotheInformation({id, ...newInfo});
     if(updateClotheInfo.id){
-        res.status(200).json({Message: "Invemntory has been successfully updated within the database"});
+        res.status(200).json({Message: "Inventory has been successfully updated within the database"});
     }else{
         res.status(404).json({ error: `ID ${id} Can Not Be Found` });
     }
