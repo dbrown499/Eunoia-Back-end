@@ -1,15 +1,10 @@
-\c euphoria_app;
+\c eunoia_app;
 
 
-INSERT INTO clothes  (type_of_clothing, size, price, stock, season_collection, description) VALUES 
-('Sweaters','medium', 54.95, 950, 'Winter', 'In 2024 Ronny will drop his first collection of sweaters.' ),
-('Sweaters','small', 54.95, 950, 'Winter', 'In 2024 Ronny will drop his first collection of sweaters.' ),
-('Sweaters','large', 54.95, 950, 'Winter', 'In 2024 Ronny will drop his first collection of sweaters.' ),
-('Pants','Small', 32.45 , 432, 'Fall', 'In 2025 Ronny will drop his first collection of pants.' ),
-('Pants','medium', 32.45, 432, 'Fall', 'In 2025 Ronny will drop his first collection of pants.' ),
-('Pants','large', 32.45, 432, 'Fall', 'In 2025 Ronny will drop his first collection of pants.' ),
-('Shirts','Large', 25.00, 525, 'Summer', 'In 2025 Ronny will drop his first collection of shirts.' ),
-('Shirts','medium', 25.00, 525, 'Summer', 'In 2025 Ronny will drop his first collection of shirts.' ),
-('Shirts','small', 25.00, 525, 'Summer', 'In 2025 Ronny will drop his first collection of shirts.' );
-
-
+INSERT INTO Products (type, name, description, size, price, stock, image_url) VALUES 
+('Sweater', 'Kiss The Moment Goodbye', 'Cropped Fit Hoodie', 'XS', 125, 10, '/Users/diamondbrown/Documents/Diamond-Project/Major-Projects/Eunoia_app/back-end/images/IMG_1626.jpg'),
+('Sweater', 'Kiss The Moment Goodbye', 'Cropped Fit Hoodie', 'S', 125, 20, '/Users/diamondbrown/Documents/Diamond-Project/Major-Projects/Eunoia_app/back-end/images/IMG_1626.jpg'),
+('Sweater', 'Kiss The Moment Goodbye', 'Cropped Fit Hoodie', 'M', 125, 20, '/Users/diamondbrown/Documents/Diamond-Project/Major-Projects/Eunoia_app/back-end/images/IMG_1626.jpg'),
+('Sweater', 'Kiss The Moment Goodbye', 'Cropped Fit Hoodie', 'L', 125, 20, '/Users/diamondbrown/Documents/Diamond-Project/Major-Projects/Eunoia_app/back-end/images/IMG_1626.jpg'),
+('Sweater', 'Kiss The Moment Goodbye', 'Cropped Fit Hoodie', 'XL', 125, 20, '/Users/diamondbrown/Documents/Diamond-Project/Major-Projects/Eunoia_app/back-end/images/IMG_1626.jpg'),
+('Sweater', 'Kiss The Moment Goodbye', 'Cropped Fit Hoodie', 'XXL', 125, 10, '/Users/diamondbrown/Documents/Diamond-Project/Major-Projects/Eunoia_app/back-end/images/IMG_1626.jpg')
