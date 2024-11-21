@@ -1,8 +1,9 @@
 DROP DATABASE IF EXISTS eunoia_app;
-
 CREATE DATABASE eunoia_app;
 
+
 \c eunoia_app;
+
 
 
 
@@ -22,46 +23,50 @@ CREATE TABLE Products (
     name VARCHAR(150) NOT NULL,
     description TEXT,
     size  TEXT NOT NULL,
-    price DECIMAL(10, 2) NOT NULL,
+    price INT NOT NULL,
     stock INT NOT NULL, -- For inventory management
     image_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- CREATE TABLE Orders (
---     order_id SERIAL PRIMARY KEY,
---     user_id INT REFERENCES Users(user_id),
---     total_amount DECIMAL(10, 2) NOT NULL,
---     order_status VARCHAR(50) DEFAULT 'pending', -- 'pending', 'shipped', 'delivered'
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
+CREATE TABLE orders (
+    order_id SERIAL PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    customer_email VARCHAR(100) NOT NULL,
+    total_amount NUMERIC(10, 2) NOT NULL, -- Sum of all `order_items.total_price`
+    order_status VARCHAR(20) DEFAULT 'pending', -- e.g., "completed", "canceled"
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- CREATE TABLE Order_Items (
---     order_item_id SERIAL PRIMARY KEY,
---     order_id INT REFERENCES Orders(order_id),
---     product_id INT REFERENCES Products(product_id),
---     quantity INT NOT NULL,
---     price_at_time DECIMAL(10, 2) NOT NULL -- stores price at time of purchase
--- );
+CREATE TABLE order_items (
+    order_item_id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    product_id INT NOT NULL REFERENCES Products(product_id) ON DELETE CASCADE,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    price_per_unit INT NOT NULL, -- Price of the product at the time of the order
+    total_price INT NOT NULL -- Derived: price_per_unit * quantity
+);
 
--- CREATE TABLE Cart (
---     cart_id SERIAL PRIMARY KEY,
---     user_id INT REFERENCES Users(user_id),
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
 
--- CREATE TABLE Cart_Items (
---     cart_item_id SERIAL PRIMARY KEY,
---     cart_id INT REFERENCES Cart(cart_id),
---     product_id INT REFERENCES Products(product_id),
---     quantity INT NOT NULL
--- );
+CREATE TABLE billing_details (
+    billing_id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    full_name VARCHAR(100) NOT NULL,
+    address_line1 VARCHAR(255) NOT NULL,
+    address_line2 VARCHAR(255),
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100),
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    phone_number VARCHAR(20),
+    email VARCHAR(100) NOT NULL -- Ensure it aligns with customer_email in `orders`
+);
 
--- CREATE TABLE Payments (
---     payment_id SERIAL PRIMARY KEY,
---     order_id INT REFERENCES Orders(order_id),
---     payment_method VARCHAR(50), -- e.g. 'credit card', 'paypal'
---     payment_status VARCHAR(50) DEFAULT 'pending', -- 'pending', 'completed'
---     amount DECIMAL(10, 2) NOT NULL,
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
+CREATE TABLE payments (
+    payment_id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    payment_method VARCHAR(50) NOT NULL, -- e.g., "credit_card", "paypal"
+    amount NUMERIC(10, 2) NOT NULL,
+    payment_status VARCHAR(20) DEFAULT 'pending', -- e.g., "completed", "failed"
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
