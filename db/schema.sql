@@ -58,7 +58,7 @@ CREATE TABLE billing_details (
     state VARCHAR(100),
     postal_code VARCHAR(20) NOT NULL,
     country VARCHAR(100) NOT NULL,
-    phone_number VARCHAR(20),
+    phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(100) NOT NULL -- Ensure it aligns with customer_email in `orders`
 );
 

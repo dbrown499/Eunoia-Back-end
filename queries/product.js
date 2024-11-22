@@ -66,9 +66,6 @@ const deleteProductItem = async (id) => {
 };
 
 
-
-
-
 module.exports = {
     getAllProducts,
     getOneTypeOfProduct,

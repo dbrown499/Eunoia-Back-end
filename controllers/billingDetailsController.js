@@ -4,9 +4,9 @@ const billingDetails = express.Router();
 const {
   getAllBillingDetails,
   getOneBillingDetail,
-//   addProduct,
-//   updateProductInfo,
-//   deleteProductItem
+  addBillingDetails,
+  updateBillingDetails,
+  deleteBillingDetails
 } = require('../queries/billingDetails');
 
 
@@ -20,9 +20,9 @@ billingDetails.get("/", async (req, res) => {
 });
 
 
-billingDetails.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const oneBillingDetail = await getOneBillingDetail(id);
+billingDetails.get("/:order_id", async (req, res) => {
+  const { order_id } = req.params;
+  const oneBillingDetail = await getOneBillingDetail(order_id);
   if (oneBillingDetail[0]) {
     res.status(200).json(oneBillingDetail);
   } else {
@@ -31,48 +31,33 @@ billingDetails.get("/:id", async (req, res) => {
 });
 
 
-// products.post("/", async (req, res) => {
-//   const addNewProductItem = await addProduct(req.body);
-//   res.status(201).json({ Message: "New product item has been added to the list of available products", newitem: addNewProductItem });
-// });
+billingDetails.post("/", async (req, res) => {
+  const addNewBillingDetails = await addBillingDetails(req.body);
+  res.status(201).json({ Message: "New billing information has been added to the list", newBillingDetails: addNewBillingDetails });
+});
 
-// products.put("/:id", async (req, res) => {
-//   const newInfo = req.body;
-//   const { id } = req.params;
-//   // console.log({ type, ...newInfo })
-//   const updateInfo = await updateProductInfo({ id, ...newInfo });
-//   if (updateInfo.product_id) {
-//     res.status(200).json({ Message: "Inventory has been successfully updated within the database", updatedProduct: updateInfo });
-//   } else {
-//     res.status(404).json({ error: `ID ${id} Can Not Be Found` });
-//   }
-// });
+billingDetails.put("/:billing_id", async (req, res) => {
+  const newInfo = req.body;
+  const { billing_id } = req.params;
+  const updateInfo = await updateBillingDetails({ billing_id, ...newInfo });
+
+  if (updateInfo.billing_id) {
+    res.status(200).json({ Message: "Billing details has been successfully updated within the database", updatedBillingDetails: updateInfo });
+  } else {
+    res.status(404).json({ error: `ID ${billing_id} Can Not Be Found` });
+  }
+});
 
 
-// // products.delete("/:id", async (req, res) => {
-// //     const { id } = req.params;
-// //     const deletedProduct = await deleteProductItem(id);
-
-// //     if(deletedProduct.id) {
-// //         res.status(200).json({ message: `The clothing item called "${deletedProduct.type}" has been removed.`, product:  deletedProduct});
-// //     } else {
-// //         res.status(404).json( {error: `Item located at id ${id} could not be found `});
-// //     }
-// // });
-
-// products.delete("/:id", async (req, res) => {
-//   const { id } = req.params;
-//   try {
-//     const deletedProduct = await deleteProductItem(id);
-//     if (deletedProduct) {
-//       res.status(200).json({ message: `The product has been removed.`});
-//     } else {
-//       res.status(404).json({ error: `Item with id ${id} could not be found` });
-//     }
-//   } catch (error) {
-//     res.status(500).json({ error: "An error occurred while deleting the product." });
-//   }
-// });
+billingDetails.delete("/:billing_id", async (req, res) => {
+  const { billing_id } = req.params;
+    const deletedBillingDetails = await deleteBillingDetails(billing_id);
+    if (deletedBillingDetails) {
+      res.status(200).json({ message: `The billing information has been removed.`});
+    } else {
+      res.status(404).json({ error: `Billing information with ID ${billing_id} could not be found` });
+    }
+});
 
 
 

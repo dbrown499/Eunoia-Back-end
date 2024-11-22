@@ -20,61 +20,62 @@ const getOneBillingDetail = async (id) => {
     }
 };
 
-// const addProduct = async (newItem) => {
-//     try {
-//         const addItem = await db.one(
-//             "INSERT INTO Products (type, name, size, price, stock) VALUES($1, $2, $3, $4, $5) RETURNING *",
-//             [
-//                 newItem.type,
-//                 newItem.name,
-//                 newItem.size,
-//                 newItem.price,
-//                 newItem.stock,
-//             ]);
-//         return addItem;
-//     } catch (err) {
-//         return err;
-//     }
-// };
+const addBillingDetails = async (newDetails) => {
+    try {
+        const addBillingDetails = await db.one(
+            "INSERT INTO billing_details (order_id, full_name, address_line1, city, postal_code, country, phone_number, email) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+            [
+                newDetails.order_id,
+                newDetails.full_name,
+                newDetails.address_line1,
+                newDetails.city,
+                newDetails.postal_code,
+                newDetails.country,
+                newDetails.phone_number,
+                newDetails.email,
+            ]);
+        return addBillingDetails;
+    } catch (err) {
+        return err;
+    }
+};
 
-// const updateProductInfo = async (updateItem) => {
-//     try {
-//         const updateInfo = await db.one(
-//             "UPDATE Products SET type=$1, name=$2, size=$3, price=$4, stock=$5 WHERE product_id=$6 RETURNING *",
-//             [
-//                 updateItem.type,
-//                 updateItem.name,
-//                 updateItem.size,
-//                 updateItem.price,
-//                 updateItem.stock,
-//                 updateItem.id
-//             ]
-//         );
-//         return updateInfo;
-//     } catch (err) {
-//         return err;
-//     }
-// };
+const updateBillingDetails = async (updateItem) => {
+    try {
+        const updateInfo = await db.one(
+            "UPDATE billing_details SET order_id=$1, full_name=$2, address_line1=$3, city=$4, postal_code=$5, country=$6, phone_number=$7, email=$8  WHERE billing_id=$9 RETURNING *",
+            [
+                updateItem.order_id,
+                updateItem.full_name,
+                updateItem.address_line1,
+                updateItem.city,
+                updateItem.postal_code,
+                updateItem.country,
+                updateItem.phone_number,
+                updateItem.email,
+                updateItem.billing_id
+            ]
+        );
+        return updateInfo;
+    } catch (err) {
+        return err;
+    }
+};
 
-// const deleteProductItem = async (id) => {
-//     try {
-//         const deletedProduct = await db.any("DELETE FROM Products WHERE product_id=$1 RETURNING *", [id]);
-//         // console.log(deletedProduct);
-//         return deletedProduct;
-//     } catch (err) {
-//         console.error("Error deleting product:", err);
-//         return err; 
-//     }
-// };
-
-
-
+const deleteBillingDetails = async (id) => {
+    try {
+        const deletedBillingDetails = await db.any("DELETE FROM billing_details WHERE billing_id=$1 RETURNING *", [id]);
+        return deletedBillingDetails;
+    } catch (err) {
+        return err; 
+    }
+};
 
 
 module.exports = {
     getAllBillingDetails,
     getOneBillingDetail,
-    // addProduct,
-    // updateProductInfo,
-    // deleteProductItem
+    addBillingDetails,
+    updateBillingDetails,
+    deleteBillingDetails
 };
