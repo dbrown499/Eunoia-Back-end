@@ -50,17 +50,6 @@ products.put("/:id", async (req, res) => {
 });
 
 
-// products.delete("/:id", async (req, res) => {
-//     const { id } = req.params;
-//     const deletedProduct = await deleteProductItem(id);
-
-//     if(deletedProduct.id) {
-//         res.status(200).json({ message: `The clothing item called "${deletedProduct.type}" has been removed.`, product:  deletedProduct});
-//     } else {
-//         res.status(404).json( {error: `Item located at id ${id} could not be found `});
-//     }
-// });
-
 products.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
