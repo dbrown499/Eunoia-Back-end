@@ -9,61 +9,59 @@ const getAllOrderItems = async () => {
     }
 };
 
-// const getOneTypeOfProduct = async (type) => {
-//     try {
-//         const listOfOneTypeOfProduct = await db.any("SELECT * FROM Products WHERE type ILIKE $1", type);
-//         return listOfOneTypeOfProduct;
-//     } catch (err) {
-//         return err;
-//     }
-// };
+const getOnePersonsOrderList = async (orderId) => {
+    try {
+        const listOfPersonsOrderItems = await db.any("SELECT * FROM order_items WHERE order_id = $1", orderId);
+        return listOfPersonsOrderItems;
+    } catch (err) {
+        return err;
+    }
+};
 
-// const addProduct = async (newItem) => {
-//     try {
-//         const addItem = await db.one(
-//             "INSERT INTO Products (type, name, size, price, stock) VALUES($1, $2, $3, $4, $5) RETURNING *",
-//             [
-//                 newItem.type,
-//                 newItem.name,
-//                 newItem.size,
-//                 newItem.price,
-//                 newItem.stock,
-//             ]);
-//         return addItem;
-//     } catch (err) {
-//         return err;
-//     }
-// };
+const addOrderItem = async (newItem) => {
+    try {
+        const addOrderItem = await db.one(
+            "INSERT INTO order_items (order_id, product_id, quantity, price_per_unit, total_price) VALUES($1, $2, $3, $4, $5) RETURNING *",
+            [
+                newItem.order_id,
+                newItem.product_id,
+                newItem.quantity,
+                newItem.price_per_unit,
+                newItem.total_price,
+            ]);
+        return addOrderItem;
+    } catch (err) {
+        return err;
+    }
+};
 
-// const updateProductInfo = async (updateItem) => {
-//     try {
-//         const updateInfo = await db.one(
-//             "UPDATE Products SET type=$1, name=$2, size=$3, price=$4, stock=$5 WHERE product_id=$6 RETURNING *",
-//             [
-//                 updateItem.type,
-//                 updateItem.name,
-//                 updateItem.size,
-//                 updateItem.price,
-//                 updateItem.stock,
-//                 updateItem.id
-//             ]
-//         );
-//         return updateInfo;
-//     } catch (err) {
-//         return err;
-//     }
-// };
+const updateOrderItemInfo = async (updateItem) => {
+    try {
+        const updateInfo = await db.one(
+            "UPDATE order_items SET order_id=$1, product_id=$2, quantity=$3, price_per_unit=$4, total_price=$5 WHERE order_item_id=$6 RETURNING *",
+            [
+                updateItem.order_id,
+                updateItem.product_id,
+                updateItem.quantity,
+                updateItem.price_per_unit,
+                updateItem.total_price,
+                updateItem.order_item_id
+            ]
+        );
+        return updateInfo;
+    } catch (err) {
+        return err;
+    }
+};
 
-// const deleteProductItem = async (id) => {
-//     try {
-//         const deletedProduct = await db.any("DELETE FROM Products WHERE product_id=$1 RETURNING *", [id]);
-//         // console.log(deletedProduct);
-//         return deletedProduct;
-//     } catch (err) {
-//         console.error("Error deleting product:", err);
-//         return err; 
-//     }
-// };
+const deleteOrderItem = async (orderItemId) => {
+    try {
+        const deletedorderItem = await db.any("DELETE FROM order_items WHERE order_item_id=$1 RETURNING *", [orderItemId]);
+        return deletedorderItem;
+    } catch (err) {
+        return err; 
+    }
+};
 
 
 
@@ -71,8 +69,8 @@ const getAllOrderItems = async () => {
 
 module.exports = {
     getAllOrderItems,
-    // getOneTypeOfProduct,
-    // addProduct,
-    // updateProductInfo,
-    // deleteProductItem
+    getOnePersonsOrderList,
+    addOrderItem,
+    updateOrderItemInfo,
+    deleteOrderItem
 };
