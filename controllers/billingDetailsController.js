@@ -3,7 +3,7 @@ const billingDetails = express.Router();
 
 const {
   getAllBillingDetails,
-//   getOneTypeOfProduct,
+  getOneBillingDetail,
 //   addProduct,
 //   updateProductInfo,
 //   deleteProductItem
@@ -20,15 +20,15 @@ billingDetails.get("/", async (req, res) => {
 });
 
 
-// products.get("/:type", async (req, res) => {
-//   const { type } = req.params;
-//   const oneTypeOfProduct = await getOneTypeOfProduct(type);
-//   if (oneTypeOfProduct[0]) {
-//     res.status(200).json(oneTypeOfProduct);
-//   } else {
-//     res.status(500).json({ error: `We don't sell ${type}` });
-//   }
-// });
+billingDetails.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const oneBillingDetail = await getOneBillingDetail(id);
+  if (oneBillingDetail[0]) {
+    res.status(200).json(oneBillingDetail);
+  } else {
+    res.status(500).json({ error: `No billing information for order Id ${id}` });
+  }
+});
 
 
 // products.post("/", async (req, res) => {

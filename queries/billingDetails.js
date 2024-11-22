@@ -9,14 +9,16 @@ const getAllBillingDetails = async () => {
     }
 };
 
-// const getOneTypeOfProduct = async (type) => {
-//     try {
-//         const listOfOneTypeOfProduct = await db.any("SELECT * FROM Products WHERE type ILIKE $1", type);
-//         return listOfOneTypeOfProduct;
-//     } catch (err) {
-//         return err;
-//     }
-// };
+const getOneBillingDetail = async (id) => {
+    try {
+        const listOfOneBillingDetail = await db.any(
+            "SELECT * FROM billing_details WHERE order_id = $1", [id]
+        );
+        return listOfOneBillingDetail;
+    } catch (err) {
+        return err;
+    }
+};
 
 // const addProduct = async (newItem) => {
 //     try {
@@ -71,7 +73,7 @@ const getAllBillingDetails = async () => {
 
 module.exports = {
     getAllBillingDetails,
-    // getOneTypeOfProduct,
+    getOneBillingDetail,
     // addProduct,
     // updateProductInfo,
     // deleteProductItem
