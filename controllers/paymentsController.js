@@ -1,5 +1,7 @@
 const express = require("express");
 const payments = express.Router();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 
 const {
     getListOfPayments,
@@ -8,6 +10,12 @@ const {
     updatePaymentInfo,
     deletePayment
 } = require('../queries/payments');
+
+payments.get("/test", (req, res) => {
+    res.send("Payments controller is working!");
+  });
+
+  
 
 payments.get("/", async (req, res) => {
     const getListOfAllDocumentedPayments = await getListOfPayments();
@@ -31,11 +39,40 @@ payments.get("/:order_id", async (req, res) => {
 });
 
 
-payments.post("/", async (req, res) => {
-    const addNewPayment = await addPayment(req.body);
-    res.status(201).json({ Message: "New payment has been added to the list of payments", newitem: addNewPayment });
-});
+// payments.post("/", async (req, res) => {
+//     const addNewPayment = await addPayment(req.body);
+//     res.status(201).json({ Message: "New payment has been added to the list of payments", newitem: addNewPayment });
+// });
 
+
+payments.post("/", async (req, res) => {
+    try {
+        const { order_id, payment_method, amount, payment_status, currency = "usd" } = req.body;
+  
+        if (!order_id || !payment_method || !amount ) {
+            return res.status(400).send("Missing required fields: order_id, payment_method, amount, or payment_status");
+          }
+
+          const addNewPayment = await addPayment(req.body);
+
+  
+      // Create payment intent with Stripe
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount, // Amount in the smallest unit (e.g., cents for USD)
+        currency,
+      });
+  
+      res.status(201).json({
+        message: "New payment has been added to the list of payments",
+        newPayment: addNewPayment,
+        clientSecret: paymentIntent.client_secret,
+      });
+
+    } catch (error) {
+    console.error("Error during payment creation:", error.message);
+    res.status(500).send({ error: error.message });
+  }
+  }); 
 
 payments.put("/:payment_id", async (req, res) => {
     const newInfo = req.body;

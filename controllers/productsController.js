@@ -1,6 +1,7 @@
 const express = require("express");
 const products = express.Router();
 
+
 const {
   getAllProducts,
   getOneTypeOfProduct,
@@ -10,6 +11,7 @@ const {
 } = require('../queries/product')
 
 // const checkValidNewInfo = require('../validations/productValidations')
+
 
 products.get("/", async (req, res) => {
   const allProducts = await getAllProducts();
