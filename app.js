@@ -29,6 +29,11 @@ app.use("/billing-details", billingDetailsController);
 const paymentsController = require("./controllers/paymentsController.js");
 app.use("/payments", paymentsController);
 
+const emailsController = require("./controllers/emailsController.js");
+app.use("/emails", emailsController);
+
+
+
 
 app.get("*", (req, res) => {
     res.status(404).send("Page not found: URL is not in the scope of any known routings");

@@ -21,9 +21,8 @@ const getOrderPayments = async (id) => {
 const addPayment = async (newItem) => {
     try {
         const addItem = await db.one(
-            "INSERT INTO payments (order_id, payment_method, amount) VALUES($1, $2, $3) RETURNING *",
+            "INSERT INTO payments ( payment_method, amount) VALUES($1, $2) RETURNING *",
             [
-                newItem.order_id,
                 newItem.payment_method,
                 newItem.amount,
             ]);
@@ -36,20 +35,33 @@ const addPayment = async (newItem) => {
 const updatePaymentInfo = async (updateItem) => {
     try {
         const updateInfo = await db.one(
-            "UPDATE payments SET order_id=$1, payment_method=$2, amount=$3 WHERE payment_id=$4 RETURNING *",
+            "UPDATE payments SET payment_method=$1 WHERE payment_id=$2 RETURNING *",
             [
-                updateItem.order_id,
                 updateItem.payment_method,
-                updateItem.amount,
                 updateItem.payment_id
 
             ]
         );
         return updateInfo;
+        // console.log(updateInfo)
     } catch (err) {
         return err;
     }
 };
+
+const getPaymentById = async (payment_id) => {
+    try {
+        const payment = await db.one(
+            "SELECT amount FROM payments WHERE payment_id = $1",
+            [payment_id]
+        );
+        return payment.amount;
+    } catch (error) {
+        console.error("Error fetching payment amount:", error);
+        throw new Error("Unable to fetch payment amount from the database.");
+    }
+};
+
 
 const deletePayment = async (id) => {
     try {
@@ -65,5 +77,6 @@ module.exports = {
     getOrderPayments,
     addPayment,
     updatePaymentInfo,
+    getPaymentById,
     deletePayment
 };

@@ -4,18 +4,12 @@ CREATE DATABASE eunoia_app;
 
 \c eunoia_app;
 
+CREATE TABLE emails (
+    email_id SERIAL PRIMARY KEY,
+    name_of_email VARCHAR(150) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-
-
--- CREATE TABLE Users (
---     user_id SERIAL PRIMARY KEY,
---     name VARCHAR(100),
---     email VARCHAR(100) UNIQUE NOT NULL,
---     password_hash VARCHAR(255) NOT NULL,
---     address TEXT,
---     role VARCHAR(50) DEFAULT 'customer', -- could be 'admin' or 'customer'
---     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
--- );
 
 CREATE TABLE Products (
     product_id SERIAL PRIMARY KEY,
@@ -40,7 +34,7 @@ CREATE TABLE orders (
 
 CREATE TABLE order_items (
     order_item_id SERIAL PRIMARY KEY,
-    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    -- order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
     product_id INT NOT NULL REFERENCES Products(product_id) ON DELETE CASCADE,
     quantity INT NOT NULL CHECK (quantity > 0),
     price_per_unit INT NOT NULL, -- Price of the product at the time of the order
@@ -50,7 +44,7 @@ CREATE TABLE order_items (
 
 CREATE TABLE billing_details (
     billing_id SERIAL PRIMARY KEY,
-    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    -- order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
     full_name VARCHAR(100) NOT NULL,
     address_line1 VARCHAR(255) NOT NULL,
     address_line2 VARCHAR(255),
@@ -64,7 +58,7 @@ CREATE TABLE billing_details (
 
 CREATE TABLE payments (
     payment_id SERIAL PRIMARY KEY,
-    order_id INT NOT NULL REFERENCES orders(order_id) ON DELETE CASCADE,
+    -- order_id INT REFERENCES orders(order_id) ON DELETE CASCADE,
     payment_method VARCHAR(50) NOT NULL, -- e.g., "credit_card", "paypal"
     amount NUMERIC(10, 2) NOT NULL,
     payment_status VARCHAR(20) DEFAULT 'pending', -- e.g., "completed", "failed"
