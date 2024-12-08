@@ -21,11 +21,10 @@ const getOneOrder = async (id) => {
 const addOrder = async (order) => {
     try {
         const addOrderItem = await db.one(
-            "INSERT INTO orders (customer_name, customer_email, total_amount) VALUES($1, $2, $3) RETURNING *",
+            "INSERT INTO orders (item_count, total_amount) VALUES($1, $2) RETURNING *",
             [
-                order.customer_name,
-                order.customer_email,
-                order.total_amount,
+                order.item_count,
+                order.total_amount
             ]);
         return addOrderItem;
     } catch (err) {
@@ -36,12 +35,10 @@ const addOrder = async (order) => {
 const updateOrderInfo = async (updateItem) => {
     try {
         const updateInfo = await db.one(
-            "UPDATE orders SET customer_name=$1, customer_email=$2, total_amount=$3, order_status=$4 WHERE order_id=$5 RETURNING *",
+            "UPDATE orders SET item_count=$1, total_amount=$2 WHERE order_id=$3 RETURNING *",
             [
-                updateItem.customer_name,
-                updateItem.customer_email,
+                updateItem.item_count,
                 updateItem.total_amount,
-                updateItem.order_status,
                 updateItem.id
             ]
         );

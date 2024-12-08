@@ -3,7 +3,7 @@ const orderItems = express.Router();
 
 const {
   getAllOrderItems,
-  getOnePersonsOrderList,
+  getOneOrderItem,
   addOrderItem,
   updateOrderItemInfo,
   deleteOrderItem
@@ -20,13 +20,13 @@ orderItems.get("/", async (req, res) => {
 });
 
 
-orderItems.get("/:order_id", async (req, res) => {
-  const { order_id } = req.params;
-  const onePersonsOrderList = await getOnePersonsOrderList(order_id);
-  if (onePersonsOrderList[0]) {
-    res.status(200).json(onePersonsOrderList);
+orderItems.get("/:order_item_id", async (req, res) => {
+  const { order_item_id } = req.params;
+  const oneOrderItem = await getOneOrderItem(order_item_id);
+  if (oneOrderItem[0]) {
+    res.status(200).json(oneOrderItem);
   } else {
-    res.status(500).json({ error: `There are no order items associated with ID ${order_id}` });
+    res.status(500).json({ error: `There are no order item ${order_item_id}` });
   }
 });
 

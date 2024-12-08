@@ -11,7 +11,7 @@ const getListOfPayments = async () => {
 
 const getOrderPayments = async (id) => {
     try {
-        const listOfOrderPayments = await db.any("SELECT * FROM payments WHERE order_id = $1", id);
+        const listOfOrderPayments = await db.any("SELECT * FROM payments WHERE payment_id = $1", id);
         return listOfOrderPayments;
     } catch (err) {
         return err;
@@ -21,10 +21,12 @@ const getOrderPayments = async (id) => {
 const addPayment = async (newItem) => {
     try {
         const addItem = await db.one(
-            "INSERT INTO payments ( payment_method, amount) VALUES($1, $2) RETURNING *",
+            "INSERT INTO payments (order_id, payment_method, amount, payment_status) VALUES($1, $2, $3, $4) RETURNING *",
             [
+                newItem.order_id,
                 newItem.payment_method,
                 newItem.amount,
+                newItem.payment_status
             ]);
         return addItem;
     } catch (err) {
@@ -35,11 +37,13 @@ const addPayment = async (newItem) => {
 const updatePaymentInfo = async (updateItem) => {
     try {
         const updateInfo = await db.one(
-            "UPDATE payments SET payment_method=$1 WHERE payment_id=$2 RETURNING *",
+            "UPDATE payments SET order_id=$1, payment_method=$2, amount=$3, payment_status=$4 WHERE payment_id=$5 RETURNING *",
             [
+                updateItem.order_id,
                 updateItem.payment_method,
+                updateItem.amount,
+                updateItem.payment_status,
                 updateItem.payment_id
-
             ]
         );
         return updateInfo;

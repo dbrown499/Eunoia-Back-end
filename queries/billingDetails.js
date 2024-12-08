@@ -23,16 +23,17 @@ const getOneBillingDetail = async (id) => {
 const addBillingDetails = async (newDetails) => {
     try {
         const addBillingDetails = await db.one(
-            "INSERT INTO billing_details (order_id, full_name, address_line1, city, postal_code, country, phone_number, email) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+            "INSERT INTO billing_details (order_id, full_name, address_line1, city, state, postal_code, country, phone_number, email) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
             [
                 newDetails.order_id,
                 newDetails.full_name,
                 newDetails.address_line1,
                 newDetails.city,
+                newDetails.state,
                 newDetails.postal_code,
                 newDetails.country,
                 newDetails.phone_number,
-                newDetails.email,
+                newDetails.email
             ]);
         return addBillingDetails;
     } catch (err) {
