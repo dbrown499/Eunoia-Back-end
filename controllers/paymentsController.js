@@ -7,7 +7,8 @@ const {
     getListOfPayments,
     getOrderPayments,
     addPayment,
-    updatePaymentInfo,
+    // updatePaymentInfo,
+    updatePaymentInforFrontEnd,
     getPaymentById,
     deletePayment
 } = require('../queries/payments');
@@ -126,17 +127,97 @@ payments.post("/", async (req, res) => {
 // });
 
 
-payments.put("/:payment_id", async (req, res) => {
-    const { payment_id } = req.params;
-    const newInfo = req.body;
-    const updateInfo = await updatePaymentInfo({ payment_id, ...newInfo });
+// payments.put("/:payment_id", async (req, res) => {
+//     const { payment_id } = req.params;
+//     const newInfo = req.body;
+//     const updateInfo = await updatePaymentInfo({ payment_id, ...newInfo });
 
-    if (updateInfo.payment_id) {
-        res.status(200).json({ Message: "Payment information has been successfully updated within the database", updatedPayment: updateInfo });
-    } else {
-        res.status(404).json({ error: `Payment ID ${payment_id} Can Not Be Found` });
+//     if (updateInfo.payment_id) {
+//         res.status(200).json({ Message: "Payment information has been successfully updated within the database", updatedPayment: updateInfo });
+//     } else {
+//         res.status(404).json({ error: `Payment ID ${payment_id} Can Not Be Found` });
+//     }
+// });
+
+
+/////YESSSSS
+
+// payments.put("/:order_id", async (req, res) => {
+//     const { order_id } = req.params;
+//     const newInfo = req.body;
+//     const updateInfo = await updatePaymentInforFrontEnd({ order_id, ...newInfo });
+//     const { payment_method, currency = "usd" } = req.body; // Extract payment method and optional currency
+
+
+//     const orderData = await getOrderPayments(order_id); // Custom function to fetch order details
+
+    
+//     if (!orderData[0] || !orderData[0].amount) {
+//         return res.status(404).json({ error: `Order ID ${order_id} not found or missing amount.` });
+//     }
+    
+//     const amount = orderData[0].amount; // Use amount from database
+    
+//     // console.log(amount.replace('.', ''))
+
+//     if (updateInfo.order_id) {
+//         res.status(200).json({ Message: "Payment information has been successfully updated within the database", updatedPayment: updateInfo });
+//     } else {
+//         res.status(404).json({ error: `Payment ID Can Not Be Found` });
+//     }
+
+
+
+// });
+
+///////YESSSSSS
+
+
+
+payments.put("/:order_id", async (req, res) => {
+    const { order_id } = req.params;
+    const { payment_method, currency = "usd" } = req.body; // Extract payment method and optional currency
+
+    try {
+        // Step 1: Fetch or Validate Amount
+        const orderData = await getOrderPayments(order_id); // Custom function to fetch order details
+        if (!orderData[0] || !orderData[0].amount) {
+            return res.status(404).json({ error: `Order ID ${order_id} not found or missing amount.` });
+        }
+
+        const amount = orderData[0].amount; // Use amount from database
+
+        // Step 2: Update Payment Information in the Database
+        const updateInfo = await updatePaymentInforFrontEnd({ order_id, ...req.body });
+        if (!updateInfo.order_id) {
+            return res.status(404).json({ error: `Order ID ${order_id} cannot be found.` });
+        }
+
+        // Step 3: Create Stripe Payment Intent
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount.replace('.', ''), // Convert amount to the smallest currency unit (e.g., cents)
+            currency,
+            payment_method, // Use the payment method passed in the request
+            metadata: { order_id }, // Attach metadata for tracking
+        });
+
+        // Step 4: Respond with Success
+        res.status(200).json({
+            message: "Payment information has been successfully updated in the database and a payment intent was created.",
+            updatedPayment: updateInfo,
+            clientSecret: paymentIntent.client_secret, // Used on the frontend to confirm payment
+        });
+    } catch (error) {
+        console.error("Error during payment update or intent creation:", error.message);
+        res.status(500).json({ error: error.message });
     }
 });
+
+
+
+
+
+
 
 
 payments.delete("/:payment_id", async (req, res) => {

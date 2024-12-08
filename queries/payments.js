@@ -34,16 +34,34 @@ const addPayment = async (newItem) => {
     }
 };
 
-const updatePaymentInfo = async (updateItem) => {
+// const updatePaymentInfo = async (updateItem) => {
+//     try {
+//         const updateInfo = await db.one(
+//             "UPDATE payments SET order_id=$1, payment_method=$2, amount=$3, payment_status=$4 WHERE payment_id=$5 RETURNING *",
+//             [
+//                 updateItem.order_id,
+//                 updateItem.payment_method,
+//                 updateItem.amount,
+//                 updateItem.payment_status,
+//                 updateItem.payment_id
+//             ]
+//         );
+//         return updateInfo;
+//         // console.log(updateInfo)
+//     } catch (err) {
+//         return err;
+//     }
+// };
+const updatePaymentInforFrontEnd = async (updateItem) => {
     try {
         const updateInfo = await db.one(
-            "UPDATE payments SET order_id=$1, payment_method=$2, amount=$3, payment_status=$4 WHERE payment_id=$5 RETURNING *",
+            "UPDATE payments SET payment_method=$1, payment_status=$2 WHERE order_id=$3 RETURNING *",
             [
-                updateItem.order_id,
+                
                 updateItem.payment_method,
-                updateItem.amount,
+                // updateItem.amount,
                 updateItem.payment_status,
-                updateItem.payment_id
+                updateItem.order_id
             ]
         );
         return updateInfo;
@@ -80,7 +98,8 @@ module.exports = {
     getListOfPayments,    
     getOrderPayments,
     addPayment,
-    updatePaymentInfo,
+    // updatePaymentInfo,
+    updatePaymentInforFrontEnd,
     getPaymentById,
     deletePayment
 };
