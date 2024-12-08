@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require("cors");
 const bodyParser = require('body-parser');
 
-
 const app = express();
 
 app.use(cors());
@@ -17,6 +16,24 @@ app.get('/', (req, res) => {
 
 const productsController = require("./controllers/productsController.js");
 app.use("/products", productsController);
+
+const ordersController = require("./controllers/ordersController.js");
+app.use("/orders", ordersController);
+
+const orderItemsController = require("./controllers/orderItemsController.js");
+app.use("/order-items", orderItemsController);
+
+const billingDetailsController = require("./controllers/billingDetailsController.js");
+app.use("/billing-details", billingDetailsController);
+
+const paymentsController = require("./controllers/paymentsController.js");
+app.use("/payments", paymentsController);
+
+const emailsController = require("./controllers/emailsController.js");
+app.use("/emails", emailsController);
+
+
+
 
 app.get("*", (req, res) => {
     res.status(404).send("Page not found: URL is not in the scope of any known routings");

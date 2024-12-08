@@ -11,7 +11,7 @@ const getAllProducts = async () => {
 
 const getOneTypeOfProduct = async (type) => {
     try {
-        const listOfOneTypeOfProduct = await db.any("SELECT * FROM Products WHERE type ILIKE $1", type);
+        const listOfOneTypeOfProduct = await db.any("SELECT * FROM Products WHERE type LIKE $1 ", type);
         return listOfOneTypeOfProduct;
     } catch (err) {
         return err;
@@ -21,13 +21,15 @@ const getOneTypeOfProduct = async (type) => {
 const addProduct = async (newItem) => {
     try {
         const addItem = await db.one(
-            "INSERT INTO Products (type, name, size, price, stock) VALUES($1, $2, $3, $4, $5) RETURNING *",
+            "INSERT INTO Products (type, name, description, size, price, stock, image_url) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *",
             [
                 newItem.type,
                 newItem.name,
+                newItem.description,
                 newItem.size,
                 newItem.price,
                 newItem.stock,
+                newItem.image_url,
             ]);
         return addItem;
     } catch (err) {
@@ -64,9 +66,6 @@ const deleteProductItem = async (id) => {
         return err; 
     }
 };
-
-
-
 
 
 module.exports = {
