@@ -54,8 +54,10 @@ const updateProductInfo = async (updateItem) => {
 
         // Update the stock by decrementing it
         const updateInfo = await db.one(
-            "UPDATE Products SET stock=$1 WHERE size=$2 RETURNING *",
-            [currentInfo.stock - 1, updateItem.sizeId]
+            "UPDATE Products SET stock = stock - 1 WHERE size=$1 RETURNING *",
+            [ 
+                updateItem.sizeId
+            ]
         );
 
         return updateInfo;
