@@ -9,9 +9,9 @@ const getAllProducts = async () => {
     }
 };
 
-const getOneTypeOfProduct = async (type) => {
+const getOneTypeOfProduct = async (size) => {
     try {
-        const listOfOneTypeOfProduct = await db.any("SELECT * FROM Products WHERE type LIKE $1 ", type);
+        const listOfOneTypeOfProduct = await db.any("SELECT * FROM Products WHERE size LIKE $1 ", size);
         return listOfOneTypeOfProduct;
     } catch (err) {
         return err;
@@ -39,18 +39,43 @@ const addProduct = async (newItem) => {
 
 const updateProductInfo = async (updateItem) => {
     try {
+
+        
+                const currentInfo = await db.one(
+                    "SELECT stock FROM Products WHERE size=$1 ", 
+                    [updateItem.sizeId]
+                );
+
+
+        // Ensure the product exists and stock is valid
+        if (!currentInfo || currentInfo.stock <= 0) {
+            throw new Error("SOLD OUT");
+        }
+
+        // Update the stock by decrementing it
         const updateInfo = await db.one(
-            "UPDATE Products SET type=$1, name=$2, size=$3, price=$4, stock=$5 WHERE product_id=$6 RETURNING *",
-            [
-                updateItem.type,
-                updateItem.name,
-                updateItem.size,
-                updateItem.price,
-                updateItem.stock,
-                updateItem.id
+            "UPDATE Products SET stock = stock - 1 WHERE size=$1 RETURNING *",
+            [ 
+                updateItem.sizeId
             ]
         );
+
         return updateInfo;
+
+            // console.log(currentInfo)
+
+        // const updateInfo = await db.one(
+        //     "UPDATE Products SET stock=$1 WHERE size=$2 RETURNING *",
+        //     [
+        //         // updateItem.type,
+        //         // updateItem.name,
+        //         // updateItem.size,
+        //         // updateItem.price,
+        //         updateItem.stock - 1,
+        //         updateItem.sizeId
+        //     ]
+        // );
+        // return updateInfo;
     } catch (err) {
         return err;
     }
