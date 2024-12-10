@@ -23,13 +23,13 @@ products.get("/", async (req, res) => {
 });
 
 
-products.get("/:type", async (req, res) => {
-  const { type } = req.params;
-  const oneTypeOfProduct = await getOneTypeOfProduct(type);
+products.get("/:size", async (req, res) => {
+  const { size } = req.params;
+  const oneTypeOfProduct = await getOneTypeOfProduct(size);
   if (oneTypeOfProduct[0]) {
     res.status(200).json(oneTypeOfProduct);
   } else {
-    res.status(500).json({ error: `We don't sell ${type}` });
+    res.status(500).json({ error: `We don't sell ${size}` });
   }
 });
 
@@ -39,15 +39,14 @@ products.post("/", async (req, res) => {
   res.status(201).json({ Message: "New product item has been added to the list of available products", newitem: addNewProductItem });
 });
 
-products.put("/:id", async (req, res) => {
-  const newInfo = req.body;
-  const { id } = req.params;
-  // console.log({ type, ...newInfo })
-  const updateInfo = await updateProductInfo({ id, ...newInfo });
-  if (updateInfo.product_id) {
+products.put("/:sizeId", async (req, res) => {
+  // const newInfo = req.body;
+  const { sizeId } = req.params;
+  const updateInfo = await updateProductInfo({ sizeId });
+  if (updateInfo.size === sizeId) {
     res.status(200).json({ Message: "Inventory has been successfully updated within the database", updatedProduct: updateInfo });
   } else {
-    res.status(404).json({ error: `ID ${id} Can Not Be Found` });
+    res.status(404).json({ error: `${sizeId} Can Not Be Found` });
   }
 });
 
