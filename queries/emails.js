@@ -27,7 +27,7 @@ const deleteEmail = async (id) => {
         const deletedEmail = await db.any("DELETE FROM emails WHERE email_id=$1 RETURNING *", [id]);
         return deletedEmail;
     } catch (err) {
-        console.error("Error deleting email:", err);
+        // console.error("Error deleting email:", err);
         return err; 
     }
 };

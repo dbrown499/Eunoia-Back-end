@@ -23,16 +23,12 @@ emails.post("/", async (req, res) => {
 
 emails.delete("/:id", async (req, res) => {
     const { id } = req.params;
-    try {
-      const deletedEmails = await deleteEmail(id);
-      if (deletedEmail) {
+    const deletedEmails = await deleteEmail(id);
+      if (deletedEmails) {
         res.status(200).json({ message: `The email has been removed.`});
       } else {
         res.status(404).json({ error: `Email with id ${id} could not be found` });
       }
-    } catch (error) {
-      res.status(500).json({ error: "An error occurred while deleting the email." });
-    }
   });
 
   module.exports = emails;

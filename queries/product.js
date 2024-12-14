@@ -87,7 +87,7 @@ const deleteProductItem = async (id) => {
         // console.log(deletedProduct);
         return deletedProduct;
     } catch (err) {
-        console.error("Error deleting product:", err);
+        // console.error("Error deleting product:", err);
         return err; 
     }
 };
