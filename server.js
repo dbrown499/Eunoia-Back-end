@@ -7,7 +7,7 @@ const PORT = process.env.PORT;
 
 
 // LOG: Stripe Initialization (Optional)
-console.log("Stripe initialized with key:", process.env.STRIPE_SECRET_KEY.slice(0, 8) + "...");
+// console.log("Stripe initialized with key:", process.env.STRIPE_SECRET_KEY.slice(0, 8) + "...");
 
 // LISTEN
 app.listen(PORT, () => {
