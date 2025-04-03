@@ -1,5 +1,5 @@
 # Eunoia Backend 🌟  
-Welcome to the **Eunoia Backend**, the engine powering an eCommerce platform for my brother's clothing brand!
+Welcome to the **Eunoia Backend**, the engine powering an eCommerce platform for upcoming clothing brand named Eunoia!
 
 Whether you're a backend developer diving into the codebase or just curious about how it works behind the scenes, Eunoia is here to inspire.  
 
