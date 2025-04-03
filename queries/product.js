@@ -40,11 +40,11 @@ const addProduct = async (newItem) => {
 const updateProductInfo = async (updateItem) => {
     try {
 
-        
-                const currentInfo = await db.one(
-                    "SELECT stock FROM Products WHERE size=$1 ", 
-                    [updateItem.sizeId]
-                );
+
+        const currentInfo = await db.one(
+            "SELECT stock FROM Products WHERE size=$1 ",
+            [updateItem.sizeId]
+        );
 
 
         // Ensure the product exists and stock is valid
@@ -55,14 +55,14 @@ const updateProductInfo = async (updateItem) => {
         // Update the stock by decrementing it
         const updateInfo = await db.one(
             "UPDATE Products SET stock = stock - 1 WHERE size=$1 RETURNING *",
-            [ 
+            [
                 updateItem.sizeId
             ]
         );
 
         return updateInfo;
 
-            // console.log(currentInfo)
+        // console.log(currentInfo)
 
         // const updateInfo = await db.one(
         //     "UPDATE Products SET stock=$1 WHERE size=$2 RETURNING *",
@@ -88,7 +88,7 @@ const deleteProductItem = async (id) => {
         return deletedProduct;
     } catch (err) {
         // console.error("Error deleting product:", err);
-        return err; 
+        return err;
     }
 };
 

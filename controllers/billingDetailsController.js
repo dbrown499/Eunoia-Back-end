@@ -12,7 +12,7 @@ const {
 
 billingDetails.get("/", async (req, res) => {
   const allBillingDetails = await getAllBillingDetails();
-  if (allBillingDetails[0]) {
+  if (allBillingDetails) {
     res.status(200).json(allBillingDetails);
   } else {
     res.status(500).json({ error: "No billing details are in the database" });
@@ -51,12 +51,12 @@ billingDetails.put("/:billing_id", async (req, res) => {
 
 billingDetails.delete("/:billing_id", async (req, res) => {
   const { billing_id } = req.params;
-    const deletedBillingDetails = await deleteBillingDetails(billing_id);
-    if (deletedBillingDetails) {
-      res.status(200).json({ message: `The billing information has been removed.`});
-    } else {
-      res.status(404).json({ error: `Billing information with ID ${billing_id} could not be found` });
-    }
+  const deletedBillingDetails = await deleteBillingDetails(billing_id);
+  if (deletedBillingDetails) {
+    res.status(200).json({ message: `The billing information has been removed.` });
+  } else {
+    res.status(404).json({ error: `Billing information with ID ${billing_id} could not be found` });
+  }
 });
 
 
